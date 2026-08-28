@@ -1,0 +1,1200 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Test Drill Mekanik Aritmetika - mtkbarengkakdhanar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        .hidden-section { display: none !important; }
+        .fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        .pop-in { animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .shake { animation: shake 0.4s ease-in-out; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.92); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        /* Hilangkan spinner default pada input number */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-200 min-h-screen flex flex-col justify-between">
+
+    <!-- ==================== 1. START / LOBBY SCREEN ==================== -->
+    <div id="start-screen" class="min-h-screen flex flex-col justify-between items-center bg-gradient-to-br from-teal-50/60 via-slate-50 to-indigo-50/70 p-4 sm:p-6">
+        <div class="pt-2"></div>
+        
+        <div class="bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-xl max-w-2xl w-full border-t-8 border-teal-600 my-auto fade-in">
+            <!-- Badge Header -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-3">
+                <span class="px-3 py-1 bg-teal-100 text-teal-900 text-xs font-black rounded-full uppercase tracking-wider">Mekanik Berjenjang</span>
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-900 text-xs font-black rounded-full uppercase tracking-wider">Level 1 &rarr; Level 5</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="text-2xl sm:text-3xl font-black text-center text-slate-900 mb-2 leading-tight">
+                SPEED TEST DRILL ARITMETIKA DASAR
+            </h1>
+            <p class="text-center text-slate-500 font-semibold mb-6 text-xs sm:text-sm">
+                Tantangan Penguasaan Hitung Cepat Pecahan, Desimal, Persen & Fraksi Bertingkat
+            </p>
+            
+            <!-- Game Rules Box -->
+            <div class="bg-teal-50/80 p-4 sm:p-5 rounded-2xl mb-6 border border-teal-100 shadow-sm space-y-3">
+                <h2 class="font-black text-teal-950 flex items-center text-sm sm:text-base">
+                    <svg class="w-5 h-5 mr-2 text-teal-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                    Aturan & Mekanik Permainan:
+                </h2>
+                <ul class="list-disc list-inside text-xs sm:text-sm text-teal-950 space-y-1.5 leading-relaxed font-medium">
+                    <li>Diberikan <strong class="text-teal-900 font-black">3 Nyawa (&hearts;&hearts;&hearts;)</strong> di setiap awal level.</li>
+                    <li>Jawab <strong class="text-teal-900 font-black">5 soal benar berturut-turut</strong> untuk langsung <strong class="text-emerald-700 font-black">Naik Level</strong>.</li>
+                    <li>Jawaban salah atau waktu habis akan mengurangi 1 nyawa dan mereset kombo streak.</li>
+                    <li>Jika nyawa habis (3x salah): <strong class="text-rose-700 font-black">Turun ke Level Sebelumnya</strong> (atau Game Over jika di Level 1).</li>
+                    <li>Gunakan <strong class="text-indigo-800 font-black">Kotak Input Khusus</strong> (Pecahan Biasa, Campuran, atau Desimal/Bulat/Persen).</li>
+                </ul>
+            </div>
+
+            <!-- Level & Time Config Matrix -->
+            <div class="grid grid-cols-5 gap-1.5 sm:gap-2 text-center text-xs font-bold mb-6">
+                <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                    <p class="text-[9px] uppercase text-slate-500 font-bold">Lvl 1</p>
+                    <p class="text-xs sm:text-sm font-black text-teal-700">30s</p>
+                    <p class="text-[8px] text-slate-400 hidden sm:block">Dasar</p>
+                </div>
+                <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                    <p class="text-[9px] uppercase text-slate-500 font-bold">Lvl 2</p>
+                    <p class="text-xs sm:text-sm font-black text-teal-700">45s</p>
+                    <p class="text-[8px] text-slate-400 hidden sm:block">Desimal/%</p>
+                </div>
+                <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                    <p class="text-[9px] uppercase text-slate-500 font-bold">Lvl 3</p>
+                    <p class="text-xs sm:text-sm font-black text-teal-700">60s</p>
+                    <p class="text-[8px] text-slate-400 hidden sm:block">Campuran</p>
+                </div>
+                <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                    <p class="text-[9px] uppercase text-slate-500 font-bold">Lvl 4</p>
+                    <p class="text-xs sm:text-sm font-black text-teal-700">75s</p>
+                    <p class="text-[8px] text-slate-400 hidden sm:block">Akar/Trik</p>
+                </div>
+                <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                    <p class="text-[9px] uppercase text-slate-500 font-bold">Lvl 5</p>
+                    <p class="text-xs sm:text-sm font-black text-teal-700">90s</p>
+                    <p class="text-[8px] text-slate-400 hidden sm:block">Bertingkat</p>
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button type="button" id="start-btn" onclick="startSpeedTest()" class="w-full bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white font-black py-4 px-6 rounded-2xl shadow-lg shadow-teal-600/30 transition text-base sm:text-lg flex items-center justify-center gap-3 cursor-pointer">
+                <span>Mulai Speed Test Sekarang</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </button>
+
+            <!-- JSON Upload Option -->
+            <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+                <span>Data bank: <strong class="text-slate-700" id="dataset-status">150 Soal Default (Aktif)</strong></span>
+                <label class="cursor-pointer font-bold text-teal-700 hover:text-teal-800 underline flex items-center gap-1">
+                    <input type="file" id="json-file-input" accept=".json" class="hidden" onchange="handleJsonUpload(event)">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    Impor hitung_pecahan.json
+                </label>
+            </div>
+        </div>
+
+        <!-- Start Screen Footer -->
+        <footer class="w-full py-4 text-center text-xs text-slate-600">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 225" class="h-6 md:h-7 w-auto text-teal-800 shrink-0" fill="none">
+                        <rect x="16" y="16" width="168" height="168" rx="32" fill="none" stroke="currentColor" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="100" y1="16" x2="100" y2="184" stroke="currentColor" stroke-width="12"/>
+                        <line x1="16" y1="100" x2="184" y2="100" stroke="currentColor" stroke-width="12"/>
+                        <line x1="58" y1="38" x2="58" y2="78" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="38" y1="58" x2="78" y2="58" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="122" y1="58" x2="162" y2="58" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="44" y1="128" x2="72" y2="156" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="72" y1="128" x2="44" y2="156" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <line x1="122" y1="142" x2="162" y2="142" stroke="currentColor" stroke-width="11" stroke-linecap="round"/>
+                        <circle cx="142" cy="124" r="6.5" fill="currentColor"/>
+                        <circle cx="142" cy="160" r="6.5" fill="currentColor"/>
+                        <text x="100" y="212" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="17" fill="currentColor" letter-spacing="-0.4">mtkbarengkakdhanar</text>
+                    </svg>
+                    <span class="font-bold text-slate-800">&copy; Dhanardi Riansyah</span>
+                    <span>&bull;</span>
+                    <span class="font-medium text-slate-500">All Rights Reserved</span>
+                </div>
+                <a href="https://wa.me/6281381374712" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-bold text-slate-700 hover:text-emerald-700 transition bg-emerald-50/80 hover:bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200/80 text-xs">
+                    <svg class="w-3.5 h-3.5 text-emerald-600 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.205 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.947-1.48-2.116-1.653-2.414-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>0813-813-747-12</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== 2. MAIN QUIZ ARENA ==================== -->
+    <div id="quiz-app" class="hidden-section min-h-screen flex flex-col justify-between">
+        <div class="flex-grow">
+            <!-- Top HUD Bar -->
+            <div class="sticky top-0 bg-white/95 backdrop-blur-md shadow-sm z-40 border-b border-slate-200">
+                <div class="max-w-4xl mx-auto px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+                    
+                    <!-- Left: Level Badge & Streak -->
+                    <div class="flex items-center gap-3">
+                        <div id="level-badge" class="bg-teal-600 text-white font-black px-3 py-1 rounded-xl text-xs sm:text-sm uppercase tracking-wide shadow-sm flex items-center gap-1.5">
+                            <span>LEVEL 1</span>
+                        </div>
+                        <div class="hidden sm:flex flex-col">
+                            <span class="text-[10px] font-black text-slate-400 uppercase">Streak Naik Level</span>
+                            <div class="flex items-center gap-1 mt-0.5" id="streak-dots">
+                                <!-- 5 dots generated via JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: 3 Nyawa (Hearts) -->
+                    <div class="flex items-center gap-1 bg-rose-50 border border-rose-200 px-3 py-1 rounded-xl shadow-inner" id="lives-container">
+                        <!-- Hearts injected dynamically -->
+                    </div>
+
+                    <!-- Right: Countdown Timer -->
+                    <div class="flex items-center gap-2">
+                        <div class="text-right hidden sm:block">
+                            <span class="text-[10px] font-black text-slate-400 uppercase block">Sisa Waktu</span>
+                            <span class="text-xs font-bold text-slate-600" id="level-time-label">Maks: 30s</span>
+                        </div>
+                        <div id="timer-box" class="bg-teal-50 text-teal-800 border-2 border-teal-300 font-mono font-black text-lg sm:text-xl px-3.5 py-1 rounded-xl transition-all shadow-sm min-w-[70px] text-center">
+                            30s
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timer Progress Bar -->
+                <div class="w-full bg-slate-200 h-1.5 overflow-hidden">
+                    <div id="timer-progress" class="bg-teal-600 h-full transition-all duration-100 ease-linear w-full"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Arena Container -->
+            <div class="max-w-3xl mx-auto px-4 py-6 sm:py-8">
+                
+                <!-- Status & Progress Indicator -->
+                <div class="flex items-center justify-between text-xs font-bold text-slate-500 mb-3 px-1">
+                    <span id="question-category" class="text-teal-700 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200 font-black">Level 1: Operasi Dasar Fraksi</span>
+                    <span id="score-counter" class="text-slate-700">Skor: 0 poin</span>
+                </div>
+
+                <!-- Main Question Box -->
+                <div id="question-card" class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border border-slate-200 mb-6 transition-all duration-200">
+                    
+                    <!-- Question Prompt / LaTeX Area -->
+                    <div class="text-center py-4 sm:py-6">
+                        <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-2" id="q-number-label">SOAL #1</p>
+                        <div id="math-question" class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-wide min-h-[64px] flex items-center justify-center">
+                            $$\frac{2}{3} \times \frac{5}{7} = \dots$$
+                        </div>
+                    </div>
+
+                    <hr class="border-slate-100 my-4">
+
+                    <!-- INPUT SECTION (OPSI B: SPLIT INPUT FIELDS) -->
+                    <div class="mt-2">
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="text-xs font-black text-slate-600 uppercase tracking-wider">Pilih Format Masukan Jawaban:</label>
+                            <span class="text-[11px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md hidden sm:inline">Navigasi: [Tab] / [Enter]</span>
+                        </div>
+
+                        <!-- Format Tabs Switcher -->
+                        <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl mb-6 text-xs font-extrabold">
+                            <button type="button" onclick="switchInputMode('fraction')" id="tab-fraction" class="py-2.5 rounded-xl bg-white text-teal-800 shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>$\frac{a}{b}$</span>
+                                <span>Pecahan Biasa</span>
+                            </button>
+                            <button type="button" onclick="switchInputMode('mixed')" id="tab-mixed" class="py-2.5 rounded-xl text-slate-600 hover:text-teal-800 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>$w\frac{a}{b}$</span>
+                                <span>Campuran</span>
+                            </button>
+                            <button type="button" onclick="switchInputMode('single')" id="tab-single" class="py-2.5 rounded-xl text-slate-600 hover:text-teal-800 transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>$0{,}x$ / $\%$</span>
+                                <span>Desimal/Bulat</span>
+                            </button>
+                        </div>
+
+                        <!-- INPUT BOX CONTAINER -->
+                        <div class="bg-slate-50/80 p-5 sm:p-6 rounded-2xl border-2 border-slate-200 flex flex-col items-center justify-center min-h-[140px]" id="input-fields-wrapper">
+                            
+                            <!-- MODE 1: PECAHAN BIASA (Pembilang / Penyebut) -->
+                            <div id="mode-fraction" class="flex flex-col items-center justify-center gap-2">
+                                <div class="flex flex-col items-center">
+                                    <!-- Pembilang -->
+                                    <input type="number" id="inp-frac-num" placeholder="a" 
+                                           class="w-24 sm:w-28 text-center text-xl sm:text-2xl font-black font-mono px-3 py-2 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                           onkeydown="handleInputNav(event, 'inp-frac-num', 'inp-frac-den')">
+                                    <!-- Garis Pecahan -->
+                                    <div class="w-28 sm:w-32 h-1 bg-slate-700 rounded-full my-1.5"></div>
+                                    <!-- Penyebut -->
+                                    <input type="number" id="inp-frac-den" placeholder="b" 
+                                           class="w-24 sm:w-28 text-center text-xl sm:text-2xl font-black font-mono px-3 py-2 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                           onkeydown="handleInputNav(event, 'inp-frac-den', null)">
+                                </div>
+                            </div>
+
+                            <!-- MODE 2: PECAHAN CAMPURAN (Bulat + Pembilang / Penyebut) -->
+                            <div id="mode-mixed" class="hidden-section flex items-center justify-center gap-3">
+                                <!-- Bilangan Bulat -->
+                                <div class="flex flex-col items-center">
+                                    <span class="text-[10px] font-black text-slate-400 mb-1">Bulat ($w$)</span>
+                                    <input type="number" id="inp-mixed-whole" placeholder="1" 
+                                           class="w-20 sm:w-24 text-center text-xl sm:text-2xl font-black font-mono px-3 py-4 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                           onkeydown="handleInputNav(event, 'inp-mixed-whole', 'inp-mixed-num')">
+                                </div>
+                                
+                                <div class="flex flex-col items-center">
+                                    <!-- Pembilang -->
+                                    <input type="number" id="inp-mixed-num" placeholder="a" 
+                                           class="w-20 sm:w-24 text-center text-lg sm:text-xl font-black font-mono px-2 py-1.5 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                           onkeydown="handleInputNav(event, 'inp-mixed-num', 'inp-mixed-den')">
+                                    <!-- Garis Pecahan -->
+                                    <div class="w-24 sm:w-28 h-1 bg-slate-700 rounded-full my-1"></div>
+                                    <!-- Penyebut -->
+                                    <input type="number" id="inp-mixed-den" placeholder="b" 
+                                           class="w-20 sm:w-24 text-center text-lg sm:text-xl font-black font-mono px-2 py-1.5 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                           onkeydown="handleInputNav(event, 'inp-mixed-den', null)">
+                                </div>
+                            </div>
+
+                            <!-- MODE 3: DESIMAL / BULAT / PERSEN -->
+                            <div id="mode-single" class="hidden-section w-full max-w-xs flex flex-col items-center">
+                                <span class="text-[10px] font-black text-slate-400 mb-1">Ketik nilai (Contoh: 0,25 / 2.5 / 80 / 25%)</span>
+                                <input type="text" id="inp-single-val" placeholder="Masukkan nilai..." 
+                                       class="w-full text-center text-xl sm:text-2xl font-black font-mono px-4 py-3 bg-white border-2 border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none transition shadow-sm"
+                                       onkeydown="handleInputNav(event, 'inp-single-val', null)">
+                            </div>
+                        </div>
+
+                        <!-- Virtual Quick Buttons Helper -->
+                        <div class="flex flex-wrap items-center justify-center gap-1.5 mt-3">
+                            <button type="button" onclick="insertSingleChar('-')" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg text-xs transition cursor-pointer">Tanda Negatif (-)</button>
+                            <button type="button" onclick="insertSingleChar(',')" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg text-xs transition cursor-pointer">Koma (,)</button>
+                            <button type="button" onclick="insertSingleChar('%')" class="px-2.5 py-1 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-lg text-xs transition cursor-pointer">Persen (%)</button>
+                            <button type="button" onclick="clearCurrentInputs()" class="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold rounded-lg text-xs transition cursor-pointer">Kosongkan Input</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Submit Button -->
+                    <div class="mt-6 flex gap-3">
+                        <button type="button" id="submit-ans-btn" onclick="submitAnswer()" class="w-full bg-teal-600 hover:bg-teal-700 active:scale-[0.98] text-white font-black py-3.5 px-6 rounded-2xl shadow-lg shadow-teal-600/25 transition flex items-center justify-center gap-2 text-base cursor-pointer">
+                            <span>Kirim Jawaban [Enter]</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instant Notification Banner for Feedback -->
+                <div id="feedback-banner" class="hidden-section p-4 rounded-2xl mb-4 font-bold text-center text-sm shadow-sm transition-all duration-200"></div>
+
+            </div>
+        </div>
+
+        <!-- Quiz Footer -->
+        <footer class="py-3 bg-white border-t border-slate-200 text-center text-xs text-slate-500">
+            <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+                <span>Speed Test &bull; mtkbarengkakdhanar</span>
+                <button type="button" onclick="confirmQuit()" class="text-rose-600 hover:text-rose-700 font-bold underline cursor-pointer">Akhiri Sesi</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ==================== 3. MODAL PERINGATAN / LEVEL TRANSITION ==================== -->
+    <div id="transition-modal" class="hidden-section fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center pop-in border-4" id="modal-border">
+            <div id="modal-icon-container" class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl">
+                🚀
+            </div>
+            <h3 id="modal-heading" class="text-2xl font-black mb-2 text-slate-900">LEVEL UP!</h3>
+            <p id="modal-desc" class="mb-6 text-slate-600 text-sm leading-relaxed">Selamat! Anda berhasil menjawab 5 soal berturut-turut.</p>
+            
+            <button type="button" id="modal-action-btn" onclick="closeTransitionModal()" class="w-full py-3.5 bg-teal-600 text-white font-black rounded-xl hover:bg-teal-700 transition shadow-lg cursor-pointer">
+                Lanjutkan Pertarungan
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== 4. RESULT & REVIEW SCREEN ==================== -->
+    <div id="result-screen" class="hidden-section max-w-4xl mx-auto px-4 py-8">
+        <!-- Summary Card -->
+        <div class="bg-gradient-to-br from-teal-800 via-teal-900 to-slate-900 text-white p-6 sm:p-10 rounded-3xl shadow-2xl text-center relative overflow-hidden mb-8">
+            <div class="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <span class="inline-block bg-white/20 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2 backdrop-blur-md" id="result-badge">
+                Sesi Selesai
+            </span>
+            <h2 class="text-2xl sm:text-4xl font-black mb-2" id="result-title">RAPOR PERFORMA SPEED TEST</h2>
+            <p class="mb-6 text-teal-100 text-xs sm:text-sm max-w-md mx-auto" id="result-subtitle">
+                Hasil evaluasi kecepatan dan ketelitian hitung mekanik aritmetika Anda.
+            </p>
+            
+            <!-- Statistics Matrix -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-white/10 p-4 sm:p-5 rounded-2xl backdrop-blur-md max-w-2xl mx-auto border border-white/20 mb-6">
+                <div class="p-2 text-center">
+                    <p class="text-[10px] sm:text-xs text-teal-200 font-extrabold uppercase mb-1">Skor Akhir</p>
+                    <p class="text-2xl sm:text-3xl font-black text-white" id="stat-score">0</p>
+                </div>
+                <div class="p-2 text-center border-l border-white/20">
+                    <p class="text-[10px] sm:text-xs text-teal-200 font-extrabold uppercase mb-1">Level Tertinggi</p>
+                    <p class="text-2xl sm:text-3xl font-black text-amber-300" id="stat-max-level">Lvl 1</p>
+                </div>
+                <div class="p-2 text-center border-l border-white/20">
+                    <p class="text-[10px] sm:text-xs text-teal-200 font-extrabold uppercase mb-1">Soal Terjawab</p>
+                    <p class="text-2xl sm:text-3xl font-black text-emerald-300" id="stat-correct">0</p>
+                </div>
+                <div class="p-2 text-center border-l border-white/20">
+                    <p class="text-[10px] sm:text-xs text-teal-200 font-extrabold uppercase mb-1">Akurasi</p>
+                    <p class="text-2xl sm:text-3xl font-black text-teal-200" id="stat-accuracy">0%</p>
+                </div>
+            </div>
+
+            <!-- Retry & Actions -->
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <button type="button" onclick="restartSpeedTest()" class="bg-white text-teal-900 hover:bg-teal-50 font-black py-3 px-8 rounded-full shadow-lg transition transform hover:scale-105 cursor-pointer text-sm">
+                    Main Lagi (Ulangi Tes)
+                </button>
+                <button type="button" onclick="document.getElementById('review-section').scrollIntoView({ behavior: 'smooth' });" class="bg-teal-700/80 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-full border border-teal-500/40 transition cursor-pointer text-sm">
+                    Lihat Pembahasan Lengkap &darr;
+                </button>
+            </div>
+        </div>
+
+        <!-- Detailed Review Section -->
+        <div id="review-section" class="mt-8 mb-16">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-200">
+                <div>
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-800">Riwayat & Pembahasan Soal</h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Evaluasi kembali seluruh soal yang telah dikerjakan pada sesi ini.</p>
+                </div>
+                <div class="flex bg-slate-200 p-1 rounded-xl text-xs font-bold gap-1 self-start sm:self-auto">
+                    <button type="button" onclick="filterReview('all')" id="flt-all" class="px-3 py-1.5 rounded-lg bg-white text-teal-800 shadow-sm transition">Semua (<span id="cnt-rev-all">0</span>)</button>
+                    <button type="button" onclick="filterReview('correct')" id="flt-correct" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-emerald-700 transition">Benar (<span id="cnt-rev-correct">0</span>)</button>
+                    <button type="button" onclick="filterReview('wrong')" id="flt-wrong" class="px-3 py-1.5 rounded-lg text-slate-600 hover:text-rose-700 transition">Salah (<span id="cnt-rev-wrong">0</span>)</button>
+                </div>
+            </div>
+
+            <!-- Review Cards List -->
+            <div id="review-cards-list" class="space-y-4">
+                <!-- Generated dynamically via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+    <script>
+        const defaultQuestionsBank = [
+            // --- LEVEL 1 (Soal 1 - 30): Operasi Dasar Pecahan Biasa & Campuran ---
+            { "id": 1, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{2}{3} \\times \\frac{5}{7} = \\dots", "answer_latex": "\\frac{10}{21}", "answer_type": "fraction", "components": { "whole": null, "num": 10, "den": 21, "decimal": null }, "accepted_answers": ["10/21"] },
+            { "id": 2, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{3}{4} \\times \\frac{8}{9} = \\dots", "answer_latex": "\\frac{2}{3}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["2/3"] },
+            { "id": 3, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{5}{6} \\times \\frac{9}{10} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 4, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{4}{15} \\times \\frac{5}{8} = \\dots", "answer_latex": "\\frac{1}{6}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 6, "decimal": null }, "accepted_answers": ["1/6"] },
+            { "id": 5, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{7}{12} \\times \\frac{4}{21} = \\dots", "answer_latex": "\\frac{1}{9}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 9, "decimal": null }, "accepted_answers": ["1/9"] },
+            { "id": 6, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{11}{14} \\times \\frac{7}{22} = \\dots", "answer_latex": "\\frac{1}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 4, "decimal": "0.25" }, "accepted_answers": ["1/4", "0.25", "0,25", "25%"] },
+            { "id": 7, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{7}{9} \\div \\frac{14}{15} = \\dots", "answer_latex": "\\frac{5}{6}", "answer_type": "fraction", "components": { "whole": null, "num": 5, "den": 6, "decimal": null }, "accepted_answers": ["5/6"] },
+            { "id": 8, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{8}{21} \\div \\frac{4}{7} = \\dots", "answer_latex": "\\frac{2}{3}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["2/3"] },
+            { "id": 9, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{12}{25} \\div \\frac{18}{35} = \\dots", "answer_latex": "\\frac{14}{15}", "answer_type": "fraction", "components": { "whole": null, "num": 14, "den": 15, "decimal": null }, "accepted_answers": ["14/15"] },
+            { "id": 10, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{15}{16} \\div \\frac{25}{24} = \\dots", "answer_latex": "\\frac{9}{10}", "answer_type": "fraction", "components": { "whole": null, "num": 9, "den": 10, "decimal": "0.9" }, "accepted_answers": ["9/10", "0.9", "0,9", "90%"] },
+            { "id": 11, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{2}{5} + \\frac{3}{7} = \\dots", "answer_latex": "\\frac{29}{35}", "answer_type": "fraction", "components": { "whole": null, "num": 29, "den": 35, "decimal": null }, "accepted_answers": ["29/35"] },
+            { "id": 12, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{5}{6} - \\frac{3}{8} = \\dots", "answer_latex": "\\frac{11}{24}", "answer_type": "fraction", "components": { "whole": null, "num": 11, "den": 24, "decimal": null }, "accepted_answers": ["11/24"] },
+            { "id": 13, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{7}{12} + \\frac{5}{18} = \\dots", "answer_latex": "\\frac{31}{36}", "answer_type": "fraction", "components": { "whole": null, "num": 31, "den": 36, "decimal": null }, "accepted_answers": ["31/36"] },
+            { "id": 14, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{9}{14} - \\frac{2}{21} = \\dots", "answer_latex": "\\frac{23}{42}", "answer_type": "fraction", "components": { "whole": null, "num": 23, "den": 42, "decimal": null }, "accepted_answers": ["23/42"] },
+            { "id": 15, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "1\\frac{1}{2} \\times \\frac{4}{5} = \\dots", "answer_latex": "1\\frac{1}{5}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 5, "decimal": "1.2" }, "accepted_answers": ["1 1/5", "6/5", "1.2", "1,2"] },
+            { "id": 16, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "2\\frac{1}{3} \\times 1\\frac{2}{7} = \\dots", "answer_latex": "3", "answer_type": "integer", "components": { "whole": 3, "num": null, "den": null, "decimal": "3" }, "accepted_answers": ["3"] },
+            { "id": 17, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "3\\frac{3}{4} \\times 2\\frac{2}{5} = \\dots", "answer_latex": "9", "answer_type": "integer", "components": { "whole": 9, "num": null, "den": null, "decimal": "9" }, "accepted_answers": ["9"] },
+            { "id": 18, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "2\\frac{2}{3} \\div 1\\frac{1}{3} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 19, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "4\\frac{1}{2} \\div 1\\frac{1}{8} = \\dots", "answer_latex": "4", "answer_type": "integer", "components": { "whole": 4, "num": null, "den": null, "decimal": "4" }, "accepted_answers": ["4"] },
+            { "id": 20, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "5\\frac{1}{4} \\div 2\\frac{5}{8} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 21, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "2\\frac{1}{4} + 1\\frac{1}{3} = \\dots", "answer_latex": "3\\frac{7}{12}", "answer_type": "mixed_fraction", "components": { "whole": 3, "num": 7, "den": 12, "decimal": null }, "accepted_answers": ["3 7/12", "43/12"] },
+            { "id": 22, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "3\\frac{1}{2} - 1\\frac{3}{4} = \\dots", "answer_latex": "1\\frac{3}{4}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 3, "den": 4, "decimal": "1.75" }, "accepted_answers": ["1 3/4", "7/4", "1.75", "1,75"] },
+            { "id": 23, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "4\\frac{2}{5} + 2\\frac{1}{2} = \\dots", "answer_latex": "6\\frac{9}{10}", "answer_type": "mixed_fraction", "components": { "whole": 6, "num": 9, "den": 10, "decimal": "6.9" }, "accepted_answers": ["6 9/10", "69/10", "6.9", "6,9"] },
+            { "id": 24, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "5\\frac{1}{6} - 2\\frac{2}{3} = \\dots", "answer_latex": "2\\frac{1}{2}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 1, "den": 2, "decimal": "2.5" }, "accepted_answers": ["2 1/2", "5/2", "2.5", "2,5"] },
+            { "id": 25, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "6\\frac{1}{4} \\div 1\\frac{9}{16} = \\dots", "answer_latex": "4", "answer_type": "integer", "components": { "whole": 4, "num": null, "den": null, "decimal": "4" }, "accepted_answers": ["4"] },
+            { "id": 26, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "2\\frac{7}{9} \\div 1\\frac{2}{3} = \\dots", "answer_latex": "1\\frac{2}{3}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["1 2/3", "5/3"] },
+            { "id": 27, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "3\\frac{1}{2} \\times 1\\frac{3}{7} = \\dots", "answer_latex": "5", "answer_type": "integer", "components": { "whole": 5, "num": null, "den": null, "decimal": "5" }, "accepted_answers": ["5"] },
+            { "id": 28, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "4\\frac{1}{6} \\times \\frac{12}{25} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 29, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "2\\frac{4}{5} \\times 3\\frac{1}{8} = \\dots", "answer_latex": "8\\frac{3}{4}", "answer_type": "mixed_fraction", "components": { "whole": 8, "num": 3, "den": 4, "decimal": "8.75" }, "accepted_answers": ["8 3/4", "35/4", "8.75", "8,75"] },
+            { "id": 30, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "5\\frac{5}{9} \\div 3\\frac{1}{3} = \\dots", "answer_latex": "1\\frac{2}{3}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["1 2/3", "5/3"] },
+
+            // --- LEVEL 2 (Soal 31 - 60): Pecahan, Desimal & Persentase ---
+            { "id": 31, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "\\frac{3}{5} \\times 0{,}4 = \\dots", "answer_latex": "\\frac{6}{25}", "answer_type": "fraction", "components": { "whole": null, "num": 6, "den": 25, "decimal": "0.24" }, "accepted_answers": ["6/25", "0.24", "0,24", "24%"] },
+            { "id": 32, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}75 \\times \\frac{4}{9} = \\dots", "answer_latex": "\\frac{1}{3}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 3, "decimal": null }, "accepted_answers": ["1/3"] },
+            { "id": 33, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "25\\% \\times \\frac{8}{15} = \\dots", "answer_latex": "\\frac{2}{15}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 15, "decimal": null }, "accepted_answers": ["2/15"] },
+            { "id": 34, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "60\\% \\times 1\\frac{1}{3} = \\dots", "answer_latex": "\\frac{4}{5}", "answer_type": "fraction", "components": { "whole": null, "num": 4, "den": 5, "decimal": "0.8" }, "accepted_answers": ["4/5", "0.8", "0,8", "80%"] },
+            { "id": 35, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "\\frac{5}{8} \\times 40\\% = \\dots", "answer_latex": "\\frac{1}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 4, "decimal": "0.25" }, "accepted_answers": ["1/4", "0.25", "0,25", "25%"] },
+            { "id": 36, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}6 \\div \\frac{3}{4} = \\dots", "answer_latex": "\\frac{4}{5}", "answer_type": "fraction", "components": { "whole": null, "num": 4, "den": 5, "decimal": "0.8" }, "accepted_answers": ["4/5", "0.8", "0,8", "80%"] },
+            { "id": 37, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "1\\frac{1}{4} \\div 0{,}25 = \\dots", "answer_latex": "5", "answer_type": "integer", "components": { "whole": 5, "num": null, "den": null, "decimal": "5" }, "accepted_answers": ["5"] },
+            { "id": 38, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "45\\% \\div \\frac{9}{20} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 39, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "\\frac{7}{10} \\div 35\\% = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 40, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}125 \\times 32\\% = \\dots", "answer_latex": "\\frac{1}{25}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 25, "decimal": "0.04" }, "accepted_answers": ["1/25", "0.04", "0,04", "4%"] },
+            { "id": 41, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}35 \\times 1\\frac{3}{7} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 42, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}8 \\times 15\\% \\times 2\\frac{1}{2} = \\dots", "answer_latex": "\\frac{3}{10}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 10, "decimal": "0.3" }, "accepted_answers": ["3/10", "0.3", "0,3", "30%"] },
+            { "id": 43, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "35\\% \\times 0{,}8 \\div \\frac{7}{10} = \\dots", "answer_latex": "\\frac{2}{5}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 5, "decimal": "0.4" }, "accepted_answers": ["2/5", "0.4", "0,4", "40%"] },
+            { "id": 44, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "2\\frac{1}{2} \\times 0{,}4 \\div 50\\% = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 45, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "1{,}2 \\div 80\\% \\times \\frac{2}{3} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 46, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "75\\% \\div 0{,}5 \\times \\frac{1}{3} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 47, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "2\\frac{4}{5} \\times 15\\% \\div 0{,}42 = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 48, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}625 \\times \\frac{4}{5} \\div 12{,}5\\% = \\dots", "answer_latex": "4", "answer_type": "integer", "components": { "whole": 4, "num": null, "den": null, "decimal": "4" }, "accepted_answers": ["4"] },
+            { "id": 49, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "80\\% \\times 2\\frac{1}{4} \\div 0{,}9 = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 50, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}16 \\div 40\\% \\times 1\\frac{7}{8} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 51, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "12\\% \\times 3\\frac{1}{3} \\div 0{,}08 = \\dots", "answer_latex": "5", "answer_type": "integer", "components": { "whole": 5, "num": null, "den": null, "decimal": "5" }, "accepted_answers": ["5"] },
+            { "id": 52, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "\\frac{3}{8} \\times 0{,}64 = \\dots", "answer_latex": "\\frac{6}{25}", "answer_type": "fraction", "components": { "whole": null, "num": 6, "den": 25, "decimal": "0.24" }, "accepted_answers": ["6/25", "0.24", "0,24", "24%"] },
+            { "id": 53, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "1{,}75 \\div 1\\frac{5}{9} \\times 40\\% = \\dots", "answer_latex": "\\frac{9}{20}", "answer_type": "fraction", "components": { "whole": null, "num": 9, "den": 20, "decimal": "0.45" }, "accepted_answers": ["9/20", "0.45", "0,45", "45%"] },
+            { "id": 54, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "64\\% \\div 0{,}16 \\times \\frac{3}{16} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 55, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}45 \\div 30\\% \\times 1\\frac{1}{3} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 56, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "16\\% \\times 2{,}5 \\div \\frac{4}{5} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 57, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "0{,}72 \\div 1\\frac{1}{5} \\times 25\\% = \\dots", "answer_latex": "\\frac{3}{20}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 20, "decimal": "0.15" }, "accepted_answers": ["3/20", "0.15", "0,15", "15%"] },
+            { "id": 58, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "3\\frac{3}{8} \\times 16\\% \\div 0{,}27 = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 59, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "85\\% \\div 0{,}17 \\times \\frac{2}{5} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 60, "level": 2, "time_limit": 45, "section": "Bagian II: Pecahan, Desimal & Persentase", "question_latex": "1{,}44 \\div 120\\% \\times \\frac{5}{6} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+
+            // --- LEVEL 3 (Soal 61 - 90): Operasi Hitung Campuran & Tanda Kurung ---
+            { "id": 61, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\frac{1}{2} + \\frac{1}{3} - \\frac{1}{4} = \\dots", "answer_latex": "\\frac{7}{12}", "answer_type": "fraction", "components": { "whole": null, "num": 7, "den": 12, "decimal": null }, "accepted_answers": ["7/12"] },
+            { "id": 62, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "2\\frac{1}{4} + 1\\frac{1}{3} - 1\\frac{5}{6} = \\dots", "answer_latex": "1\\frac{3}{4}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 3, "den": 4, "decimal": "1.75" }, "accepted_answers": ["1 3/4", "7/4", "1.75", "1,75"] },
+            { "id": 63, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "3\\frac{1}{2} - 1\\frac{3}{4} + \\frac{5}{8} = \\dots", "answer_latex": "2\\frac{3}{8}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 3, "den": 8, "decimal": "2.375" }, "accepted_answers": ["2 3/8", "19/8", "2.375", "2,375"] },
+            { "id": 64, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(\\frac{2}{3} + \\frac{1}{4}\\right) \\times \\frac{12}{11} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 65, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(2\\frac{1}{2} - 1\\frac{1}{3}\\right) \\div 1\\frac{1}{6} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 66, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\frac{3}{5} + \\frac{1}{2} \\times \\frac{4}{5} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 67, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "2\\frac{2}{3} - \\frac{3}{4} \\div \\frac{9}{8} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 68, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "1\\frac{3}{5} \\times \\frac{5}{8} + 2\\frac{1}{4} \\div 1\\frac{1}{2} = \\dots", "answer_latex": "2\\frac{1}{2}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 1, "den": 2, "decimal": "2.5" }, "accepted_answers": ["2 1/2", "5/2", "2.5", "2,5"] },
+            { "id": 69, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(3\\frac{1}{3} - 1\\frac{1}{2}\\right) \\times \\left(\\frac{3}{4} + \\frac{1}{2}\\right) = \\dots", "answer_latex": "2\\frac{7}{24}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 7, "den": 24, "decimal": null }, "accepted_answers": ["2 7/24", "55/24"] },
+            { "id": 70, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "0{,}5 + \\frac{3}{4} - 40\\% = \\dots", "answer_latex": "\\frac{17}{20}", "answer_type": "fraction", "components": { "whole": null, "num": 17, "den": 20, "decimal": "0.85" }, "accepted_answers": ["17/20", "0.85", "0,85", "85%"] },
+            { "id": 71, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "2{,}25 - 1\\frac{1}{2} + 35\\% = \\dots", "answer_latex": "1{,}1", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 10, "decimal": "1.1" }, "accepted_answers": ["1.1", "1,1", "1 1/10", "11/10"] },
+            { "id": 72, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(0{,}8 - \\frac{1}{2}\\right) \\times 150\\% = \\dots", "answer_latex": "0{,}45", "answer_type": "fraction", "components": { "whole": null, "num": 9, "den": 20, "decimal": "0.45" }, "accepted_answers": ["0.45", "0,45", "9/20", "45%"] },
+            { "id": 73, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "1\\frac{4}{5} \\div 0{,}6 - 1{,}25 = \\dots", "answer_latex": "1{,}75", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 3, "den": 4, "decimal": "1.75" }, "accepted_answers": ["1.75", "1,75", "1 3/4", "7/4"] },
+            { "id": 74, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "75\\% + 1\\frac{1}{4} \\times 0{,}8 = \\dots", "answer_latex": "1{,}75", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 3, "den": 4, "decimal": "1.75" }, "accepted_answers": ["1.75", "1,75", "1 3/4", "7/4"] },
+            { "id": 75, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "3\\frac{1}{3} \\times \\left(0{,}6 - \\frac{3}{10}\\right) = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 76, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\frac{5}{6} - \\left(\\frac{1}{3} + \\frac{1}{4}\\right) \\times \\frac{4}{7} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 77, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(2\\frac{1}{3} + 1\\frac{1}{6}\\right) \\div \\left(4\\frac{1}{2} - 2\\frac{3}{4}\\right) = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 78, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "4{,}5 \\div 1\\frac{1}{2} + 0{,}25 \\times 4 = \\dots", "answer_latex": "4", "answer_type": "integer", "components": { "whole": 4, "num": null, "den": null, "decimal": "4" }, "accepted_answers": ["4"] },
+            { "id": 79, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "2\\frac{7}{10} - 0{,}8 \\times 1\\frac{1}{4} = \\dots", "answer_latex": "1{,}7", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 7, "den": 10, "decimal": "1.7" }, "accepted_answers": ["1.7", "1,7", "1 7/10", "17/10"] },
+            { "id": 80, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "60\\% + 0{,}45 \\div \\frac{9}{10} = \\dots", "answer_latex": "1{,}1", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 10, "decimal": "1.1" }, "accepted_answers": ["1.1", "1,1", "1 1/10", "11/10"] },
+            { "id": 81, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(1\\frac{7}{8} - \\frac{5}{8}\\right) \\div (0{,}5 + 25\\%) = \\dots", "answer_latex": "1\\frac{2}{3}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["1 2/3", "5/3"] },
+            { "id": 82, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "3\\frac{3}{5} \\div 0{,}9 - 1\\frac{1}{2} \\times 1\\frac{1}{3} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 83, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "0{,}85 - 25\\% + \\frac{3}{5} \\times 1{,}5 = \\dots", "answer_latex": "1{,}5", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 2, "decimal": "1.5" }, "accepted_answers": ["1.5", "1,5", "1 1/2", "3/2"] },
+            { "id": 84, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(3\\frac{1}{4} + 1\\frac{1}{2}\\right) \\times 0{,}4 - 0{,}9 = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 85, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(4\\frac{1}{2} - 1\\frac{2}{3}\\right) \\times \\left(\\frac{3}{5} + \\frac{3}{10}\\right) = \\dots", "answer_latex": "2{,}55", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 11, "den": 20, "decimal": "2.55" }, "accepted_answers": ["2.55", "2,55", "2 11/20", "51/20"] },
+            { "id": 86, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "5\\frac{1}{2} - 2\\frac{1}{3} \\times 1\\frac{1}{2} + 0{,}75 = \\dots", "answer_latex": "2\\frac{3}{4}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 3, "den": 4, "decimal": "2.75" }, "accepted_answers": ["2 3/4", "11/4", "2.75", "2,75"] },
+            { "id": 87, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(80\\% - \\frac{1}{4}\\right) \\div \\left(0{,}5 + \\frac{3}{5}\\right) = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 88, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "4\\frac{4}{5} \\div 1{,}2 + 2\\frac{1}{2} \\times 0{,}6 = \\dots", "answer_latex": "5{,}5", "answer_type": "mixed_fraction", "components": { "whole": 5, "num": 1, "den": 2, "decimal": "5.5" }, "accepted_answers": ["5.5", "5,5", "5 1/2", "11/2"] },
+            { "id": 89, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "\\left(2{,}4 - \\frac{3}{5}\\right) \\div \\left(1\\frac{1}{2} \\times 0{,}8\\right) = \\dots", "answer_latex": "1{,}5", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 2, "decimal": "1.5" }, "accepted_answers": ["1.5", "1,5", "1 1/2", "3/2"] },
+            { "id": 90, "level": 3, "time_limit": 60, "section": "Bagian III: Operasi Hitung Campuran & Tanda Kurung", "question_latex": "3{,}6 \\times \\frac{5}{12} + 2{,}8 \\div 1\\frac{3}{4} = \\dots", "answer_latex": "3{,}1", "answer_type": "mixed_fraction", "components": { "whole": 3, "num": 1, "den": 10, "decimal": "3.1" }, "accepted_answers": ["3.1", "3,1", "3 1/10", "31/10"] },
+
+            // --- LEVEL 4 (Soal 91 - 120): Hitung Cepat, Akar, Pangkat & Desimal Periodik ---
+            { "id": 91, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "12{,}5\\% \\times 64 = \\dots", "answer_latex": "8", "answer_type": "integer", "components": { "whole": 8, "num": null, "den": null, "decimal": "8" }, "accepted_answers": ["8"] },
+            { "id": 92, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "37{,}5\\% \\times 48 = \\dots", "answer_latex": "18", "answer_type": "integer", "components": { "whole": 18, "num": null, "den": null, "decimal": "18" }, "accepted_answers": ["18"] },
+            { "id": 93, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "62{,}5\\% \\times 160 = \\dots", "answer_latex": "100", "answer_type": "integer", "components": { "whole": 100, "num": null, "den": null, "decimal": "100" }, "accepted_answers": ["100"] },
+            { "id": 94, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "87{,}5\\% \\times 96 = \\dots", "answer_latex": "84", "answer_type": "integer", "components": { "whole": 84, "num": null, "den": null, "decimal": "84" }, "accepted_answers": ["84"] },
+            { "id": 95, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "16\\frac{2}{3}\\% \\times 60 = \\dots", "answer_latex": "10", "answer_type": "integer", "components": { "whole": 10, "num": null, "den": null, "decimal": "10" }, "accepted_answers": ["10"] },
+            { "id": 96, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "83\\frac{1}{3}\\% \\times 72 = \\dots", "answer_latex": "60", "answer_type": "integer", "components": { "whole": 60, "num": null, "den": null, "decimal": "60" }, "accepted_answers": ["60"] },
+            { "id": 97, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "14\\frac{2}{7}\\% \\times 49 = \\dots", "answer_latex": "7", "answer_type": "integer", "components": { "whole": 7, "num": null, "den": null, "decimal": "7" }, "accepted_answers": ["7"] },
+            { "id": 98, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}375 \\times 0{,}8 \\div 0{,}125 = \\dots", "answer_latex": "2{,}4", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 2, "den": 5, "decimal": "2.4" }, "accepted_answers": ["2.4", "2,4", "12/5", "2 2/5"] },
+            { "id": 99, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "4\\frac{2}{5} \\times 0{,}125 \\times 20 = \\dots", "answer_latex": "11", "answer_type": "integer", "components": { "whole": 11, "num": null, "den": null, "decimal": "11" }, "accepted_answers": ["11"] },
+            { "id": 100, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}444\\dots \\times 27 = \\dots", "answer_latex": "12", "answer_type": "integer", "components": { "whole": 12, "num": null, "den": null, "decimal": "12" }, "accepted_answers": ["12"] },
+            { "id": 101, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}2727\\dots \\times 55 = \\dots", "answer_latex": "15", "answer_type": "integer", "components": { "whole": 15, "num": null, "den": null, "decimal": "15" }, "accepted_answers": ["15"] },
+            { "id": 102, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}1666\\dots \\times 42 = \\dots", "answer_latex": "7", "answer_type": "integer", "components": { "whole": 7, "num": null, "den": null, "decimal": "7" }, "accepted_answers": ["7"] },
+            { "id": 103, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}8333\\dots \\times 36 = \\dots", "answer_latex": "30", "answer_type": "integer", "components": { "whole": 30, "num": null, "den": null, "decimal": "30" }, "accepted_answers": ["30"] },
+            { "id": 104, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(1 - \\frac{1}{2}\\right)\\left(1 - \\frac{1}{3}\\right)\\left(1 - \\frac{1}{4}\\right) = \\dots", "answer_latex": "\\frac{1}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 4, "decimal": "0.25" }, "accepted_answers": ["1/4", "0.25", "0,25", "25%"] },
+            { "id": 105, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(1 - \\frac{1}{5}\\right)\\left(1 - \\frac{1}{6}\\right)\\left(1 - \\frac{1}{7}\\right) = \\dots", "answer_latex": "\\frac{4}{7}", "answer_type": "fraction", "components": { "whole": null, "num": 4, "den": 7, "decimal": null }, "accepted_answers": ["4/7"] },
+            { "id": 106, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\frac{1}{2} \\times \\frac{2}{3} \\times \\frac{3}{4} \\times \\dots \\times \\frac{9}{10} = \\dots", "answer_latex": "\\frac{1}{10}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 10, "decimal": "0.1" }, "accepted_answers": ["1/10", "0.1", "0,1", "10%"] },
+            { "id": 107, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(1 + \\frac{1}{2}\\right)\\left(1 + \\frac{1}{3}\\right)\\left(1 + \\frac{1}{4}\\right) = \\dots", "answer_latex": "2\\frac{1}{2}", "answer_type": "mixed_fraction", "components": { "whole": 2, "num": 1, "den": 2, "decimal": "2.5" }, "accepted_answers": ["2 1/2", "5/2", "2.5", "2,5"] },
+            { "id": 108, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(1 + \\frac{1}{5}\\right)\\left(1 + \\frac{1}{6}\\right)\\left(1 + \\frac{1}{7}\\right) = \\dots", "answer_latex": "1\\frac{3}{5}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 3, "den": 5, "decimal": "1.6" }, "accepted_answers": ["1 3/5", "8/5", "1.6", "1,6"] },
+            { "id": 109, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\frac{1}{1 \\times 2} + \\frac{1}{2 \\times 3} + \\frac{1}{3 \\times 4} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 110, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\frac{1}{2} + \\frac{1}{4} + \\frac{1}{8} + \\frac{1}{16} = \\dots", "answer_latex": "\\frac{15}{16}", "answer_type": "fraction", "components": { "whole": null, "num": 15, "den": 16, "decimal": "0.9375" }, "accepted_answers": ["15/16", "0.9375", "0,9375"] },
+            { "id": 111, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\frac{3}{4} \\div \\frac{6}{7} \\div \\frac{14}{15} = \\dots", "answer_latex": "\\frac{15}{16}", "answer_type": "fraction", "components": { "whole": null, "num": 15, "den": 16, "decimal": "0.9375" }, "accepted_answers": ["15/16", "0.9375", "0,9375"] },
+            { "id": 112, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(2 - \\frac{1}{3}\\right) \\div \\left(1 + \\frac{1}{4}\\right) = \\dots", "answer_latex": "1\\frac{1}{3}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 3, "decimal": null }, "accepted_answers": ["1 1/3", "4/3"] },
+            { "id": 113, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}75 \\times 1\\frac{1}{3} + 0{,}5 \\div 25\\% = \\dots", "answer_latex": "3", "answer_type": "integer", "components": { "whole": 3, "num": null, "den": null, "decimal": "3" }, "accepted_answers": ["3"] },
+            { "id": 114, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(3\\frac{1}{2}\\right)^2 \\div 12{,}25 = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 115, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\sqrt{\\frac{9}{16}} \\times \\frac{8}{15} = \\dots", "answer_latex": "\\frac{2}{5}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 5, "decimal": "0.4" }, "accepted_answers": ["2/5", "0.4", "0,4", "40%"] },
+            { "id": 116, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\sqrt{0{,}25} + \\sqrt{0{,}09} = \\dots", "answer_latex": "0{,}8", "answer_type": "fraction", "components": { "whole": null, "num": 4, "den": 5, "decimal": "0.8" }, "accepted_answers": ["0.8", "0,8", "4/5", "80%"] },
+            { "id": 117, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\left(\\frac{2}{3}\\right)^3 \\times \\frac{27}{16} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 118, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "150\\% \\times \\frac{4}{9} \\div 0{,}333\\dots = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 119, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "0{,}12 \\div 0{,}004 = \\dots", "answer_latex": "30", "answer_type": "integer", "components": { "whole": 30, "num": null, "den": null, "decimal": "30" }, "accepted_answers": ["30"] },
+            { "id": 120, "level": 4, "time_limit": 75, "section": "Bagian IV: Hitung Cepat, Akar, Pangkat & Desimal Periodik", "question_latex": "\\frac{0{,}3 \\times 0{,}4}{0{,}06} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+
+            // --- LEVEL 5 (Soal 121 - 150): Fraksi Bertingkat & Aritmetika Tingkat Lanjut ---
+            { "id": 121, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{\\frac{2}{3} + \\frac{1}{2}}{5} = \\dots", "answer_latex": "\\frac{7}{30}", "answer_type": "fraction", "components": { "whole": null, "num": 7, "den": 30, "decimal": null }, "accepted_answers": ["7/30"] },
+            { "id": 122, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1\\frac{1}{4} - \\frac{3}{4}}{0{,}5 + \\frac{1}{4}} = \\dots", "answer_latex": "\\frac{2}{3}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["2/3"] },
+            { "id": 123, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{0{,}6 \\times 2\\frac{1}{2}}{1{,}5 - 0{,}75} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 124, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{\\frac{3}{4} - \\frac{1}{3}}{\\frac{1}{2} + \\frac{1}{6}} = \\dots", "answer_latex": "\\frac{5}{8}", "answer_type": "fraction", "components": { "whole": null, "num": 5, "den": 8, "decimal": "0.625" }, "accepted_answers": ["5/8", "0.625", "0,625"] },
+            { "id": 125, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{2\\frac{1}{2} + 1\\frac{1}{3}}{2\\frac{1}{2} - 1\\frac{1}{3}} = \\dots", "answer_latex": "3\\frac{2}{7}", "answer_type": "mixed_fraction", "components": { "whole": 3, "num": 2, "den": 7, "decimal": null }, "accepted_answers": ["3 2/7", "23/7"] },
+            { "id": 126, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{0{,}8 - \\frac{2}{5}}{0{,}25 + \\frac{1}{8}} = \\dots", "answer_latex": "1\\frac{1}{15}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 15, "decimal": null }, "accepted_answers": ["1 1/15", "16/15"] },
+            { "id": 127, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{\\frac{5}{6} \\times \\frac{3}{10}}{\\frac{2}{3} \\div \\frac{4}{9}} = \\dots", "answer_latex": "\\frac{1}{6}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 6, "decimal": null }, "accepted_answers": ["1/6"] },
+            { "id": 128, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{1 + \\frac{1}{2}} = \\dots", "answer_latex": "\\frac{2}{3}", "answer_type": "fraction", "components": { "whole": null, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["2/3"] },
+            { "id": 129, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{2 + \\frac{1}{3}} = \\dots", "answer_latex": "\\frac{3}{7}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 7, "decimal": null }, "accepted_answers": ["3/7"] },
+            { "id": 130, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{1 + \\frac{1}{1 + \\frac{1}{2}}} = \\dots", "answer_latex": "\\frac{3}{5}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 5, "decimal": "0.6" }, "accepted_answers": ["3/5", "0.6", "0,6", "60%"] },
+            { "id": 131, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{2 + \\frac{1}{2 + \\frac{1}{2}}} = \\dots", "answer_latex": "\\frac{5}{12}", "answer_type": "fraction", "components": { "whole": null, "num": 5, "den": 12, "decimal": null }, "accepted_answers": ["5/12"] },
+            { "id": 132, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "1 + \\dfrac{1}{1 + \\dfrac{1}{1 + \\frac{1}{3}}} = \\dots", "answer_latex": "1\\frac{4}{7}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 4, "den": 7, "decimal": null }, "accepted_answers": ["1 4/7", "11/7"] },
+            { "id": 133, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{2}{3 + \\dfrac{4}{1 + \\frac{1}{2}}} = \\dots", "answer_latex": "\\frac{6}{17}", "answer_type": "fraction", "components": { "whole": null, "num": 6, "den": 17, "decimal": null }, "accepted_answers": ["6/17"] },
+            { "id": 134, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{\\frac{1}{2} + \\frac{1}{3}} \\times \\frac{5}{6} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 135, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{\\frac{1}{3} - \\frac{1}{4}}{\\frac{1}{4} - \\frac{1}{5}} = \\dots", "answer_latex": "1\\frac{2}{3}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 2, "den": 3, "decimal": null }, "accepted_answers": ["1 2/3", "5/3"] },
+            { "id": 136, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{(0{,}6)^2 - (0{,}4)^2}{0{,}6 - 0{,}4} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 137, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{(1{,}5)^2 - (0{,}5)^2}{1{,}5 + 0{,}5} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 138, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{\\left(\\frac{3}{4}\\right)^2 - \\left(\\frac{1}{4}\\right)^2}{\\frac{3}{4} + \\frac{1}{4}} = \\dots", "answer_latex": "\\frac{1}{2}", "answer_type": "fraction", "components": { "whole": null, "num": 1, "den": 2, "decimal": "0.5" }, "accepted_answers": ["1/2", "0.5", "0,5", "50%"] },
+            { "id": 139, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{1 \\times 3} + \\dfrac{1}{3 \\times 5} + \\dfrac{1}{5 \\times 7} = \\dots", "answer_latex": "\\frac{3}{7}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 7, "decimal": null }, "accepted_answers": ["3/7"] },
+            { "id": 140, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{2 \\times 4} + \\dfrac{1}{4 \\times 6} + \\dfrac{1}{6 \\times 8} = \\dots", "answer_latex": "\\frac{3}{16}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 16, "decimal": "0.1875" }, "accepted_answers": ["3/16", "0.1875", "0,1875"] },
+            { "id": 141, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\left(1 - \\frac{1}{2^2}\\right)\\left(1 - \\frac{1}{3^2}\\right)\\left(1 - \\frac{1}{4^2}\\right) = \\dots", "answer_latex": "\\frac{5}{8}", "answer_type": "fraction", "components": { "whole": null, "num": 5, "den": 8, "decimal": "0.625" }, "accepted_answers": ["5/8", "0.625", "0,625"] },
+            { "id": 142, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1 + \\frac{1}{2}}{1 - \\frac{1}{2}} \\div \\dfrac{1 + \\frac{1}{3}}{1 - \\frac{1}{3}} = \\dots", "answer_latex": "1\\frac{1}{2}", "answer_type": "mixed_fraction", "components": { "whole": 1, "num": 1, "den": 2, "decimal": "1.5" }, "accepted_answers": ["1 1/2", "3/2", "1.5", "1,5"] },
+            { "id": 143, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\sqrt{\\dfrac{1}{9} + \\dfrac{1}{16}} = \\dots", "answer_latex": "\\frac{5}{12}", "answer_type": "fraction", "components": { "whole": null, "num": 5, "den": 12, "decimal": null }, "accepted_answers": ["5/12"] },
+            { "id": 144, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\sqrt{1 - \\dfrac{7}{16}} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 145, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\sqrt[3]{\\dfrac{1}{8} + \\dfrac{19}{64}} = \\dots", "answer_latex": "\\frac{3}{4}", "answer_type": "fraction", "components": { "whole": null, "num": 3, "den": 4, "decimal": "0.75" }, "accepted_answers": ["3/4", "0.75", "0,75", "75%"] },
+            { "id": 146, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{0{,}333\\dots + 0{,}666\\dots}{0{,}222\\dots} = \\dots", "answer_latex": "4{,}5", "answer_type": "mixed_fraction", "components": { "whole": 4, "num": 1, "den": 2, "decimal": "4.5" }, "accepted_answers": ["4.5", "4,5", "9/2", "4 1/2"] },
+            { "id": 147, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{0{,}125 \\times 8 + 0{,}25 \\times 4}{0{,}5 \\times 2} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 148, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\left(\\dfrac{2}{3} + \\dfrac{3}{4} + \\dfrac{5}{6}\right) \\div \\dfrac{9}{8} = \\dots", "answer_latex": "2", "answer_type": "integer", "components": { "whole": 2, "num": null, "den": null, "decimal": "2" }, "accepted_answers": ["2"] },
+            { "id": 149, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{2026 \\times \\frac{1}{2} + 2026 \\times \\frac{1}{3} + 2026 \\times \\frac{1}{6}}{2026} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] },
+            { "id": 150, "level": 5, "time_limit": 90, "section": "Bagian V: Fraksi Bertingkat & Aritmetika Tingkat Lanjut", "question_latex": "\\dfrac{1}{\\sqrt{4}} + \\dfrac{1}{\\sqrt{9}} + \\dfrac{1}{\\sqrt{36}} = \\dots", "answer_latex": "1", "answer_type": "integer", "components": { "whole": 1, "num": null, "den": null, "decimal": "1" }, "accepted_answers": ["1"] }
+        ];
+
+        const LEVEL_CONFIG = {
+            1: { time: 30, name: "Level 1: Operasi Dasar Fraksi", color: "teal" },
+            2: { time: 45, name: "Level 2: Desimal & Persentase", color: "sky" },
+            3: { time: 60, name: "Level 3: Operasi Campuran PEMDAS", color: "indigo" },
+            4: { time: 75, name: "Level 4: Trik Hitung Cepat & Akar", color: "amber" },
+            5: { time: 90, name: "Level 5: Fraksi Bertingkat Lanjut", color: "rose" }
+        };
+
+        let questionsPool = [...defaultQuestionsBank];
+        let currentLevel = 1;
+        let lives = 3;
+        let streak = 0;
+        let score = 0;
+        let maxLevelReached = 1;
+        let currentQuestion = null;
+        let currentQuestionIndex = 0;
+        let timerInterval = null;
+        let timeLeft = 30;
+        let currentMaxTime = 30;
+        let activeInputMode = 'fraction';
+        let sessionHistory = [];
+        let isProcessing = false;
+
+        function parseMathValue(valStr) {
+            if (valStr === null || valStr === undefined) return null;
+            let str = valStr.toString().trim().replace(/,/g, '.');
+            if (str === '') return null;
+
+            if (str.endsWith('%')) {
+                const num = parseFloat(str.replace('%', ''));
+                return isNaN(num) ? null : num / 100;
+            }
+
+            if (str.includes(' ') || str.includes('_')) {
+                const parts = str.split(/[\s_]+/);
+                if (parts.length === 2) {
+                    const whole = parseFloat(parts[0]);
+                    const fracParts = parts[1].split('/');
+                    if (fracParts.length === 2) {
+                        const num = parseFloat(fracParts[0]);
+                        const den = parseFloat(fracParts[1]);
+                        if (den !== 0 && !isNaN(whole) && !isNaN(num) && !isNaN(den)) {
+                            return whole >= 0 ? whole + (num / den) : whole - (num / den);
+                        }
+                    }
+                }
+            }
+
+            if (str.includes('/')) {
+                const parts = str.split('/');
+                if (parts.length === 2) {
+                    const num = parseFloat(parts[0]);
+                    const den = parseFloat(parts[1]);
+                    if (den !== 0 && !isNaN(num) && !isNaN(den)) {
+                        return num / den;
+                    }
+                }
+            }
+
+            const single = parseFloat(str);
+            return isNaN(single) ? null : single;
+        }
+
+        function isAnswerCorrect(userRaw, questionObj) {
+            if (!userRaw || !questionObj) return false;
+            const cleanedUser = userRaw.toString().trim().replace(/\s+/g, ' ');
+
+            // 1. Direct match in accepted_answers array if present
+            if (Array.isArray(questionObj.accepted_answers)) {
+                for (let ans of questionObj.accepted_answers) {
+                    if (cleanedUser.toLowerCase() === ans.toString().trim().toLowerCase()) {
+                        return true;
+                    }
+                    if (cleanedUser.replace(',', '.') === ans.toString().trim().replace(',', '.')) {
+                        return true;
+                    }
+                }
+            }
+
+            // 2. Target string comparison
+            const targetRaw = questionObj.answer_latex || questionObj.target || (questionObj.accepted_answers && questionObj.accepted_answers[0]);
+            const userVal = parseMathValue(userRaw);
+            const targetVal = parseMathValue(targetRaw);
+            
+            if (userVal !== null && targetVal !== null) {
+                return Math.abs(userVal - targetVal) < 1e-6;
+            }
+
+            return false;
+        }
+
+        function switchInputMode(mode) {
+            activeInputMode = mode;
+            ['fraction', 'mixed', 'single'].forEach(m => {
+                const tab = document.getElementById(`tab-${m}`);
+                const panel = document.getElementById(`mode-${m}`);
+                if (m === mode) {
+                    tab.classList.add('bg-white', 'text-teal-800', 'shadow-sm');
+                    tab.classList.remove('text-slate-600');
+                    panel.classList.remove('hidden-section');
+                } else {
+                    tab.classList.remove('bg-white', 'text-teal-800', 'shadow-sm');
+                    tab.classList.add('text-slate-600');
+                    panel.classList.add('hidden-section');
+                }
+            });
+            focusActiveInput();
+        }
+
+        function focusActiveInput() {
+            setTimeout(() => {
+                if (activeInputMode === 'fraction') {
+                    const el = document.getElementById('inp-frac-num');
+                    if (el) el.focus();
+                } else if (activeInputMode === 'mixed') {
+                    const el = document.getElementById('inp-mixed-whole');
+                    if (el) el.focus();
+                } else {
+                    const el = document.getElementById('inp-single-val');
+                    if (el) el.focus();
+                }
+            }, 50);
+        }
+
+        function handleInputNav(event, currentId, nextId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (nextId) {
+                    const nextEl = document.getElementById(nextId);
+                    if (nextEl) nextEl.focus();
+                } else {
+                    submitAnswer();
+                }
+            }
+        }
+
+        function insertSingleChar(char) {
+            if (activeInputMode === 'single') {
+                const inp = document.getElementById('inp-single-val');
+                inp.value += char;
+                inp.focus();
+            } else if (activeInputMode === 'fraction') {
+                const inp = document.activeElement && document.activeElement.id === 'inp-frac-den' 
+                            ? document.getElementById('inp-frac-den') 
+                            : document.getElementById('inp-frac-num');
+                if (char === '-') inp.value = '-' + inp.value;
+                inp.focus();
+            } else if (activeInputMode === 'mixed') {
+                const inp = document.getElementById('inp-mixed-whole');
+                if (char === '-') inp.value = '-' + inp.value;
+                inp.focus();
+            }
+        }
+
+        function clearCurrentInputs() {
+            document.getElementById('inp-frac-num').value = '';
+            document.getElementById('inp-frac-den').value = '';
+            document.getElementById('inp-mixed-whole').value = '';
+            document.getElementById('inp-mixed-num').value = '';
+            document.getElementById('inp-mixed-den').value = '';
+            document.getElementById('inp-single-val').value = '';
+            focusActiveInput();
+        }
+
+        function getUserFormattedAnswer() {
+            if (activeInputMode === 'fraction') {
+                const num = document.getElementById('inp-frac-num').value.trim();
+                const den = document.getElementById('inp-frac-den').value.trim();
+                if (!num && !den) return null;
+                if (!den || den === '1') return num;
+                return `${num}/${den}`;
+            } else if (activeInputMode === 'mixed') {
+                const whole = document.getElementById('inp-mixed-whole').value.trim();
+                const num = document.getElementById('inp-mixed-num').value.trim();
+                const den = document.getElementById('inp-mixed-den').value.trim();
+                if (!whole && !num && !den) return null;
+                if (!num || !den) return whole;
+                return `${whole} ${num}/${den}`;
+            } else {
+                const val = document.getElementById('inp-single-val').value.trim();
+                return val !== '' ? val : null;
+            }
+        }
+
+        function startSpeedTest() {
+            currentLevel = 1;
+            lives = 3;
+            streak = 0;
+            score = 0;
+            maxLevelReached = 1;
+            sessionHistory = [];
+
+            document.getElementById('start-screen').classList.add('hidden-section');
+            document.getElementById('result-screen').classList.add('hidden-section');
+            document.getElementById('quiz-app').classList.remove('hidden-section');
+
+            updateHUD();
+            nextQuestionLoop();
+        }
+
+        function updateHUD() {
+            const badge = document.getElementById('level-badge');
+            badge.innerText = `LEVEL ${currentLevel}`;
+            badge.className = `bg-${LEVEL_CONFIG[currentLevel].color}-600 text-white font-black px-3 py-1 rounded-xl text-xs sm:text-sm uppercase tracking-wide shadow-sm flex items-center gap-1.5`;
+
+            currentMaxTime = LEVEL_CONFIG[currentLevel].time;
+            document.getElementById('level-time-label').innerText = `Maks: ${currentMaxTime}s`;
+            document.getElementById('question-category').innerText = LEVEL_CONFIG[currentLevel].name;
+            document.getElementById('score-counter').innerText = `Skor: ${score} poin`;
+
+            const dotsContainer = document.getElementById('streak-dots');
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                const dot = document.createElement('div');
+                dot.className = `w-4 h-2 rounded-full transition-all duration-300 ${i < streak ? 'bg-emerald-500 shadow-sm' : 'bg-slate-200'}`;
+                dotsContainer.appendChild(dot);
+            }
+
+            const livesContainer = document.getElementById('lives-container');
+            livesContainer.innerHTML = '';
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('span');
+                heart.className = `text-base sm:text-lg transition-transform ${i < lives ? 'text-rose-500 scale-100' : 'text-slate-300 scale-90'}`;
+                heart.innerHTML = '&hearts;';
+                livesContainer.appendChild(heart);
+            }
+        }
+
+        function nextQuestionLoop() {
+            isProcessing = false;
+            clearCurrentInputs();
+            hideFeedback();
+
+            const levelQuestions = questionsPool.filter(q => q.level === currentLevel);
+            const pool = levelQuestions.length > 0 ? levelQuestions : questionsPool;
+            currentQuestion = pool[Math.floor(Math.random() * pool.length)];
+            currentQuestionIndex++;
+
+            const latexPrompt = currentQuestion.question_latex || currentQuestion.qLatex || "";
+            const catName = currentQuestion.section || LEVEL_CONFIG[currentLevel].name;
+
+            document.getElementById('q-number-label').innerText = `SOAL #${currentQuestionIndex} (${catName})`;
+            document.getElementById('math-question').innerHTML = `$$${latexPrompt}$$`;
+            
+            // Auto switch input tab according to answer_type for convenience
+            if (currentQuestion.answer_type === 'mixed_fraction') {
+                switchInputMode('mixed');
+            } else if (currentQuestion.answer_type === 'integer' || (currentQuestion.accepted_answers && currentQuestion.accepted_answers.some(a => a.includes('%') || a.includes('.')))) {
+                switchInputMode('single');
+            } else {
+                switchInputMode('fraction');
+            }
+
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                try { window.MathJax.typesetPromise(); } catch(e) {}
+            }
+
+            startQuestionTimer();
+            focusActiveInput();
+        }
+
+        function startQuestionTimer() {
+            clearInterval(timerInterval);
+            timeLeft = currentQuestion.time_limit || LEVEL_CONFIG[currentLevel].time;
+            currentMaxTime = timeLeft;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerBox = document.getElementById('timer-box');
+            const timerBar = document.getElementById('timer-progress');
+            
+            timerBox.innerText = `${timeLeft}s`;
+            const pct = (timeLeft / currentMaxTime) * 100;
+            timerBar.style.width = `${pct}%`;
+
+            if (timeLeft <= 5) {
+                timerBox.className = "bg-rose-600 text-white border-2 border-rose-700 font-mono font-black text-lg sm:text-xl px-3.5 py-1 rounded-xl shadow-sm min-w-[70px] text-center animate-pulse";
+                timerBar.className = "bg-rose-600 h-full transition-all duration-100 ease-linear";
+            } else if (timeLeft <= 10) {
+                timerBox.className = "bg-amber-100 text-amber-900 border-2 border-amber-400 font-mono font-black text-lg sm:text-xl px-3.5 py-1 rounded-xl shadow-sm min-w-[70px] text-center";
+                timerBar.className = "bg-amber-500 h-full transition-all duration-100 ease-linear";
+            } else {
+                timerBox.className = "bg-teal-50 text-teal-800 border-2 border-teal-300 font-mono font-black text-lg sm:text-xl px-3.5 py-1 rounded-xl shadow-sm min-w-[70px] text-center";
+                timerBar.className = "bg-teal-600 h-full transition-all duration-100 ease-linear";
+            }
+        }
+
+        function submitAnswer() {
+            if (isProcessing) return;
+            const userAns = getUserFormattedAnswer();
+            if (userAns === null) {
+                showFeedback("Silakan masukkan jawaban sebelum menekan kirim!", "bg-amber-100 text-amber-900 border border-amber-300");
+                return;
+            }
+
+            isProcessing = true;
+            clearInterval(timerInterval);
+
+            const correct = isAnswerCorrect(userAns, currentQuestion);
+            
+            sessionHistory.push({
+                qData: currentQuestion,
+                userAnswer: userAns,
+                isCorrect: correct,
+                level: currentLevel,
+                timeSpent: currentMaxTime - timeLeft
+            });
+
+            if (correct) {
+                handleCorrectAnswer();
+            } else {
+                handleWrongAnswer(false);
+            }
+        }
+
+        function handleTimeout() {
+            if (isProcessing) return;
+            isProcessing = true;
+            
+            sessionHistory.push({
+                qData: currentQuestion,
+                userAnswer: "(Waktu Habis)",
+                isCorrect: false,
+                level: currentLevel,
+                timeSpent: currentMaxTime
+            });
+
+            handleWrongAnswer(true);
+        }
+
+        function handleCorrectAnswer() {
+            streak++;
+            const points = currentLevel * 20;
+            score += points;
+            
+            showFeedback(`&check; Luar Biasa! Jawaban Tepat (+${points} poin)`, "bg-emerald-100 text-emerald-900 border border-emerald-300");
+            updateHUD();
+
+            if (streak >= 5) {
+                setTimeout(() => {
+                    triggerLevelUp();
+                }, 700);
+            } else {
+                setTimeout(() => {
+                    nextQuestionLoop();
+                }, 900);
+            }
+        }
+
+        function handleWrongAnswer(isTimeout) {
+            streak = 0;
+            lives--;
+            
+            const card = document.getElementById('question-card');
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 450);
+
+            const correctDisplay = currentQuestion.answer_latex || (currentQuestion.accepted_answers ? currentQuestion.accepted_answers[0] : currentQuestion.target);
+            const msg = isTimeout 
+                ? `&cross; Waktu Habis! Kunci: $${correctDisplay}$` 
+                : `&cross; Kurang Tepat! Kunci Jawaban: $${correctDisplay}$`;
+            
+            showFeedback(msg, "bg-rose-100 text-rose-900 border border-rose-300");
+            updateHUD();
+
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                try { window.MathJax.typesetPromise(); } catch(e) {}
+            }
+
+            if (lives <= 0) {
+                setTimeout(() => {
+                    if (currentLevel > 1) {
+                        triggerLevelDown();
+                    } else {
+                        triggerGameOver();
+                    }
+                }, 1100);
+            } else {
+                setTimeout(() => {
+                    nextQuestionLoop();
+                }, 1400);
+            }
+        }
+
+        function triggerLevelUp() {
+            if (currentLevel < 5) {
+                currentLevel++;
+                lives = 3;
+                streak = 0;
+                if (currentLevel > maxLevelReached) maxLevelReached = currentLevel;
+
+                showModal(
+                    "🚀 LEVEL UP!",
+                    `Fantastis! Anda naik ke <strong>${LEVEL_CONFIG[currentLevel].name}</strong>.<br>Waktu pengerjaan bertambah menjadi <strong>${LEVEL_CONFIG[currentLevel].time} detik</strong> per soal. Nyawa telah diisi ulang (3 &hearts;)!`,
+                    "border-emerald-500",
+                    "bg-emerald-100 text-emerald-700",
+                    "🚀",
+                    "Lanjut ke Level " + currentLevel
+                );
+            } else {
+                triggerVictory();
+            }
+        }
+
+        function triggerLevelDown() {
+            currentLevel--;
+            lives = 3;
+            streak = 0;
+            showModal(
+                "⚠️ TURUN LEVEL",
+                `3 kali kesalahan telah terjadi! Anda kembali ke <strong>${LEVEL_CONFIG[currentLevel].name}</strong> dengan durasi <strong>${LEVEL_CONFIG[currentLevel].time} detik</strong>.<br>Nyawa telah diisi ulang (3 &hearts;). Semangat!`,
+                "border-amber-500",
+                "bg-amber-100 text-amber-700",
+                "⚡",
+                "Coba Lagi di Level " + currentLevel
+            );
+        }
+
+        function triggerGameOver() {
+            showResultScreen(false);
+        }
+
+        function triggerVictory() {
+            showResultScreen(true);
+        }
+
+        function showModal(heading, desc, borderClass, iconBg, icon, btnText) {
+            document.getElementById('modal-heading').innerText = heading;
+            document.getElementById('modal-desc').innerHTML = desc;
+            document.getElementById('modal-border').className = `bg-white p-6 sm:p-8 rounded-3xl shadow-2xl max-w-md w-full text-center pop-in border-4 ${borderClass}`;
+            document.getElementById('modal-icon-container').className = `w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-3xl ${iconBg}`;
+            document.getElementById('modal-icon-container').innerText = icon;
+            document.getElementById('modal-action-btn').innerText = btnText;
+            document.getElementById('transition-modal').classList.remove('hidden-section');
+        }
+
+        function closeTransitionModal() {
+            document.getElementById('transition-modal').classList.add('hidden-section');
+            updateHUD();
+            nextQuestionLoop();
+        }
+
+        function showFeedback(text, colorClasses) {
+            const fb = document.getElementById('feedback-banner');
+            fb.innerHTML = text;
+            fb.className = `p-4 rounded-2xl mb-4 font-bold text-center text-sm shadow-sm transition-all duration-200 fade-in ${colorClasses}`;
+            fb.classList.remove('hidden-section');
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback-banner').classList.add('hidden-section');
+        }
+
+        function showResultScreen(isVictory) {
+            clearInterval(timerInterval);
+            document.getElementById('quiz-app').classList.add('hidden-section');
+            document.getElementById('transition-modal').classList.add('hidden-section');
+            document.getElementById('result-screen').classList.remove('hidden-section');
+
+            const totalAns = sessionHistory.length;
+            const correctAns = sessionHistory.filter(h => h.isCorrect).length;
+            const accuracy = totalAns > 0 ? Math.round((correctAns / totalAns) * 100) : 0;
+
+            document.getElementById('stat-score').innerText = score;
+            document.getElementById('stat-max-level').innerText = `Lvl ${maxLevelReached}`;
+            document.getElementById('stat-correct').innerText = `${correctAns}/${totalAns}`;
+            document.getElementById('stat-accuracy').innerText = `${accuracy}%`;
+
+            if (isVictory) {
+                document.getElementById('result-badge').innerText = "🏆 GRANDMASTER DRILL!";
+                document.getElementById('result-badge').className = "inline-block bg-amber-400 text-amber-950 px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2 backdrop-blur-md";
+                document.getElementById('result-title').innerText = "SELAMAT! ANDA MENYELESAIKAN LEVEL 5";
+                document.getElementById('result-subtitle').innerText = "Kemampuan hitung mekanik presisi dan kecepatan Anda sudah mencapai standar tertinggi!";
+            } else {
+                document.getElementById('result-badge').innerText = "GAME OVER";
+                document.getElementById('result-badge').className = "inline-block bg-rose-500 text-white px-4 py-1 rounded-full text-xs font-black uppercase tracking-wider mb-2 backdrop-blur-md";
+                document.getElementById('result-title').innerText = "SESI SPEED TEST BERAKHIR";
+                document.getElementById('result-subtitle').innerText = "Terus asah ketelitian dan kecepatan aritmetika Anda secara konsisten!";
+            }
+
+            renderReviewCards('all');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderReviewCards(filter = 'all') {
+            const container = document.getElementById('review-cards-list');
+            container.innerHTML = '';
+
+            const correctCount = sessionHistory.filter(h => h.isCorrect).length;
+            const wrongCount = sessionHistory.length - correctCount;
+
+            document.getElementById('cnt-rev-all').innerText = sessionHistory.length;
+            document.getElementById('cnt-rev-correct').innerText = correctCount;
+            document.getElementById('cnt-rev-wrong').innerText = wrongCount;
+
+            sessionHistory.forEach((item, idx) => {
+                if (filter === 'correct' && !item.isCorrect) return;
+                if (filter === 'wrong' && item.isCorrect) return;
+
+                const q = item.qData;
+                const isCor = item.isCorrect;
+                const border = isCor ? 'border-emerald-200 bg-white' : 'border-rose-200 bg-white';
+                const badge = isCor 
+                    ? `<span class="px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full font-black text-xs">&check; BENAR</span>`
+                    : `<span class="px-3 py-1 bg-rose-100 text-rose-800 rounded-full font-black text-xs">&cross; SALAH / TIMEOUT</span>`;
+
+                const qLatex = q.question_latex || q.qLatex || "";
+                const keyLatex = q.answer_latex || (q.accepted_answers ? q.accepted_answers.join(' / ') : q.target);
+                const sectionName = q.section || LEVEL_CONFIG[item.level].name;
+
+                const cardHTML = `
+                    <div class="p-5 sm:p-6 rounded-3xl border ${border} shadow-sm">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
+                            <span class="text-xs font-black text-slate-500 uppercase">Soal #${idx + 1} &bull; ${sectionName} (${item.timeSpent}s)</span>
+                            ${badge}
+                        </div>
+                        <div class="text-lg sm:text-xl font-bold text-slate-800 my-2">
+                            $$${qLatex}$$
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4">
+                            <div class="p-3 rounded-xl ${isCor ? 'bg-emerald-50 text-emerald-900' : 'bg-rose-50 text-rose-900'} border ${isCor ? 'border-emerald-200' : 'border-rose-200'}">
+                                <p class="text-[10px] font-black uppercase tracking-wider mb-0.5">Jawaban Anda:</p>
+                                <p class="font-black text-base">${item.userAnswer}</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-teal-50 text-teal-900 border border-teal-200">
+                                <p class="text-[10px] font-black uppercase tracking-wider mb-0.5">Kunci Jawaban Resmi:</p>
+                                <p class="font-black text-base">$${keyLatex}$</p>
+                            </div>
+                        </div>
+                        ${q.accepted_answers && q.accepted_answers.length > 1 ? `
+                        <div class="bg-slate-50 p-3 rounded-xl text-xs text-slate-600 border border-slate-200">
+                            <strong class="text-slate-800">Bentuk Jawaban yang Diterima:</strong> ${q.accepted_answers.join(', ')}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            if (window.MathJax && typeof window.MathJax.typesetPromise === 'function') {
+                try { window.MathJax.typesetPromise(); } catch(e) {}
+            }
+        }
+
+        function filterReview(type) {
+            ['all', 'correct', 'wrong'].forEach(t => {
+                const btn = document.getElementById(`flt-${t}`);
+                if (t === type) {
+                    btn.classList.add('bg-white', 'text-teal-800', 'shadow-sm');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('bg-white', 'text-teal-800', 'shadow-sm');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+            renderReviewCards(type);
+        }
+
+        function restartSpeedTest() {
+            startSpeedTest();
+        }
+
+        function confirmQuit() {
+            // Replacing native window.confirm with a custom transition modal
+            showModal(
+                "Konfirmasi Keluar",
+                "Apakah Anda yakin ingin mengakhiri sesi tes sekarang dan melihat laporan rapor?",
+                "border-rose-400",
+                "bg-rose-100 text-rose-700",
+                "⏹️",
+                "Akhiri dan Lihat Rapor"
+            );
+            document.getElementById('modal-action-btn').onclick = () => {
+                document.getElementById('transition-modal').classList.add('hidden-section');
+                showResultScreen(false);
+            };
+        }
+
+        function handleJsonUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (Array.isArray(data) && data.length > 0) {
+                        questionsPool = data;
+                        document.getElementById('dataset-status').innerText = `${data.length} Soal JSON Kustom (Aktif)`;
+                        document.getElementById('dataset-status').className = "text-emerald-700 font-black";
+                    }
+                } catch(err) {
+                    showFeedback("Format file JSON tidak valid!", "bg-rose-100 text-rose-900 border border-rose-300");
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
