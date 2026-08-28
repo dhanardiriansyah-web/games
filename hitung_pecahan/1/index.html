@@ -91,6 +91,57 @@
                 </ul>
             </div>
 
+            <!-- Formulir Data Peserta (Lead Capture) -->
+            <div class="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200 mb-6 text-left shadow-sm">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-7 h-7 bg-teal-600 text-white rounded-lg flex items-center justify-center font-black text-xs">
+                        📋
+                    </div>
+                    <div>
+                        <h3 class="font-black text-slate-900 text-sm">Identitas Peserta</h3>
+                        <p class="text-[11px] text-slate-500 font-medium">Isi data di bawah ini untuk mencatat hasil ke papan peringkat & database.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1" for="lead-name">
+                            Nama Lengkap <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="lead-name" placeholder="Contoh: Budi Santoso"
+                            class="w-full px-3.5 py-2.5 bg-white border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none font-bold text-sm text-slate-800 transition">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1" for="lead-grade">
+                                Kelas / Jenjang <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="lead-grade" placeholder="Contoh: 12 SMA / 9 SMP / Gap Year"
+                                class="w-full px-3.5 py-2.5 bg-white border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none font-bold text-sm text-slate-800 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1" for="lead-school">
+                                Asal Sekolah <span class="text-rose-500">*</span>
+                            </label>
+                            <input type="text" id="lead-school" placeholder="Contoh: SMAN 8 Jakarta"
+                                class="w-full px-3.5 py-2.5 bg-white border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none font-bold text-sm text-slate-800 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1" for="lead-wa">
+                            No. WhatsApp Aktif <span class="text-slate-400 font-normal text-[11px]">(Opsional)</span>
+                        </label>
+                        <input type="tel" id="lead-wa" placeholder="Contoh: 08123456789"
+                            class="w-full px-3.5 py-2.5 bg-white border border-slate-300 focus:border-teal-600 focus:ring-2 focus:ring-teal-100 rounded-xl outline-none font-bold text-sm text-slate-800 transition">
+                    </div>
+                </div>
+                <p id="lead-error-msg" class="text-rose-600 font-bold text-xs mt-2.5 hidden-section flex items-center gap-1">
+                    <span>⚠️</span> <span id="lead-error-text">Harap isi Nama, Kelas, dan Asal Sekolah!</span>
+                </p>
+            </div>
+
             <!-- Level & Time Config Matrix -->
             <div class="grid grid-cols-5 gap-1.5 sm:gap-2 text-center text-xs font-bold mb-6">
                 <div class="p-2 sm:p-2.5 bg-slate-100/90 rounded-2xl border border-slate-200">
@@ -472,6 +523,16 @@
 
     <!-- ==================== JAVASCRIPT LOGIC ==================== -->
     <script>
+        // URL Web App Google Apps Script Aktif
+        const GOOGLE_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwMjh4EGh8H8nDegYgw9omR9nkMGyG0RMGFkmHtutZIZyMwS_-iD3jkrzFXQp2iBJaTlg/exec";
+
+        let playerInfo = {
+            nama: "",
+            kelas: "",
+            sekolah: "",
+            wa: ""
+        };
+
         const defaultQuestionsBank = [
             // --- LEVEL 1 (Soal 1 - 30): Operasi Dasar Pecahan Biasa & Campuran ---
             { "id": 1, "level": 1, "time_limit": 30, "section": "Bagian I: Operasi Dasar Pecahan Biasa & Campuran", "question_latex": "\\frac{2}{3} \\times \\frac{5}{7} = \\dots", "answer_latex": "\\frac{10}{21}", "answer_type": "fraction", "components": { "whole": null, "num": 10, "den": 21, "decimal": null }, "accepted_answers": ["10/21"] },
@@ -816,13 +877,77 @@
             }
         }
 
+        function validateLeadForm() {
+            const nama = document.getElementById('lead-name').value.trim();
+            const kelas = document.getElementById('lead-grade').value.trim();
+            const sekolah = document.getElementById('lead-school').value.trim();
+            const wa = document.getElementById('lead-wa').value.trim();
+            const errorContainer = document.getElementById('lead-error-msg');
+            const errorText = document.getElementById('lead-error-text');
+
+            if (!nama || !kelas || !sekolah) {
+                errorText.innerText = "Mohon lengkapi Nama Lengkap, Kelas, dan Asal Sekolah terlebih dahulu!";
+                errorContainer.classList.remove('hidden-section');
+                return false;
+            }
+
+            errorContainer.classList.add('hidden-section');
+            playerInfo = { nama, kelas, sekolah, wa };
+            return true;
+        }
+
+        function sendDataToGoogleSheet(actionType = 'selesai') {
+            if (!GOOGLE_SCRIPT_WEBAPP_URL || GOOGLE_SCRIPT_WEBAPP_URL.includes("YOUR_DEPLOYMENT_ID")) {
+                console.warn("URL Google Apps Script belum dikonfigurasi.");
+                return;
+            }
+
+            const totalAns = sessionHistory.length;
+            const correctAns = sessionHistory.filter(h => h.isCorrect).length;
+            const accuracy = totalAns > 0 ? Math.round((correctAns / totalAns) * 100) : 0;
+
+            const payload = {
+                timestamp: new Date().toISOString(),
+                waktu_lokal: new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }),
+                nama: playerInfo.nama,
+                kelas: playerInfo.kelas,
+                asal_sekolah: playerInfo.sekolah,
+                whatsapp: playerInfo.wa,
+                status: actionType,
+                skor_akhir: score,
+                level_tertinggi: maxLevelReached,
+                soal_terjawab: totalAns,
+                soal_benar: correctAns,
+                akurasi_persen: accuracy + "%"
+            };
+
+            // Mengirim data ke Web App Google Apps Script
+            try {
+                fetch(GOOGLE_SCRIPT_WEBAPP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Penting untuk cross-origin webhook Apps Script
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch(err => console.error("Error mengirim data leads:", err));
+            } catch (e) {
+                console.error("Gagal mengirim payload:", e);
+            }
+        }
+
         function startSpeedTest() {
+            if (!validateLeadForm()) {
+                return;
+            }
+
             currentLevel = 1;
             lives = 3;
             streak = 0;
             score = 0;
             maxLevelReached = 1;
             sessionHistory = [];
+
+            // Kirim leads awal bahwa peserta baru saja memulai kuis
+            sendDataToGoogleSheet('mulai_tes');
 
             document.getElementById('start-screen').classList.add('hidden-section');
             document.getElementById('result-screen').classList.add('hidden-section');
@@ -1121,6 +1246,9 @@
                 document.getElementById('result-title').innerText = "SESI SPEED TEST BERAKHIR";
                 document.getElementById('result-subtitle').innerText = "Terus asah ketelitian dan kecepatan aritmetika Anda secara konsisten!";
             }
+
+            // Kirim rekap hasil akhir peserta ke Google Sheet
+            sendDataToGoogleSheet(isVictory ? 'selesai_menang' : 'selesai_kalah');
 
             renderReviewCards('all');
             window.scrollTo({ top: 0, behavior: 'smooth' });
